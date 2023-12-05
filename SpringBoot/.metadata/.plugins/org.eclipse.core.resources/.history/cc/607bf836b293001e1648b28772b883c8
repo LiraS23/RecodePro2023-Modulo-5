@@ -1,0 +1,28 @@
+package com.Modulo5.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class Home {
+
+	@GetMapping(value = { "/", "/index.html" })
+	public String home() {
+		return "index.html";
+	}
+
+	@GetMapping("/contato.html")
+	public String contato() {
+		return "contato.html";
+	}
+
+	@GetMapping("/promocoes.html")
+	public String promocoes() {
+		return "promocoes.html";
+	}
+
+	@GetMapping("/cliente.html")
+	public String cliente() {
+		return "cliente.html";
+	}
+}

@@ -1,0 +1,49 @@
+package com.Modulo5.controllers;
+
+import com.Modulo5.entities.Pedido;
+import com.Modulo5.services.PedidoService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@Controller
+public class PedidoController {
+
+    private final PedidoService pedidoService;
+
+    @Autowired
+    public PedidoController(PedidoService pedidoService) {
+        this.pedidoService = pedidoService;
+    }
+
+    @GetMapping("/pedidos.html")
+    public String listarPedidos(Model model) {
+        List<Pedido> pedidos = pedidoService.listarTodosPedidos();
+        model.addAttribute("pedidos", pedidos);
+        return "pedidos.html"; // Nome da página HTML para listar pedidos
+    }
+
+    @PostMapping("/cadastrar-pedido")
+    public String cadastrarPedido(Pedido pedido, Model model) {
+        Pedido pedidoCadastrado = pedidoService.cadastrarPedido(pedido);
+        model.addAttribute("pedido", pedidoCadastrado);
+        return "redirect:/pedidos.html?sucesso=true"; // Redireciona para a página "pedidos" com o parâmetro de sucesso
+    }
+
+    @DeleteMapping("/excluir-pedido/{idPedido}")
+    public ResponseEntity<Void> excluirPedido(@PathVariable int idPedido) {
+        pedidoService.excluirPedido(idPedido);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/editar-pedido/{idPedido}")
+    @ResponseBody
+    public Pedido obterPedidoParaEdicao(@PathVariable int idPedido) {
+        return pedidoService.buscarPorIdPedido(idPedido).orElseThrow();
+    }
+}

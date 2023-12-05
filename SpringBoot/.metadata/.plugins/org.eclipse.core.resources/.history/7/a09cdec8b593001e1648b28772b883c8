@@ -1,0 +1,42 @@
+package com.Modulo5.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.Modulo5.entities.Cliente;
+import com.Modulo5.repositores.ClienteRepository;
+
+@Service
+public class ClienteService {
+
+	private final ClienteRepository clienteRepository;
+
+	@Autowired
+	public ClienteService(ClienteService clienteRepository) {
+		this.clienteRepository = clienteRepository;
+	}
+
+	// Operação de Criação (Create)
+	public Cliente cadastrarCliente(Cliente cliente) {
+		return clienteRepository.save(cliente);
+	}
+
+	// Operação de Leitura (Read)
+	public List<Cliente> listarTodosClientes() {
+		return clienteRepository.findAll();
+	}
+
+	public Optional<Aluno> buscarPorMatricula(int matricula) {
+		return alunoRepository.findById(matricula);
+	}
+
+	// Operação de Atualização (Update)
+	public Aluno atualizarAluno(Aluno aluno) {
+		return alunoRepository.save(aluno);
+	}
+
+	// Operação de Exclusão (Delete)
+	public void excluirAluno(int matricula) {
+		alunoRepository.deleteById(matricula);
+	}
+}

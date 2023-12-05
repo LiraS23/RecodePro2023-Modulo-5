@@ -1,0 +1,18 @@
+package com.Modulo5.services;
+
+import org.springframework.stereotype.Service;
+
+import com.Modulo5.repositores.ClienteRepository;
+
+@Service
+public class ClienteService {
+	
+	private final ClienteRepository clienterepository;
+	
+	@Autowired
+	public ClienteService(ClienteService clienterepository) {
+		
+	}
+	
+
+}

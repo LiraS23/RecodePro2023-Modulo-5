@@ -1,0 +1,64 @@
+package com.Modulo5.controller;
+
+import com.Modulo5.entities.Cliente;
+import com.Modulo5.services.ClienteService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/clientes")
+public class ClienteController {
+
+	private final ClienteService clienteService;
+
+	@Autowired
+	public ClienteController(ClienteService clienteService) {
+		this.clienteService = clienteService;
+	}
+
+	// Endpoint para cadastrar um novo cliente
+	@PostMapping
+	public ResponseEntity<Cliente> cadastrarCliente(@RequestBody Cliente cliente) {
+		Cliente clienteCadastrado = clienteService.cadastrarCliente(cliente);
+		return new ResponseEntity<>(clienteCadastrado, HttpStatus.CREATED);
+	}
+
+	// Endpoint para obter todos os clientes
+	@GetMapping
+	public ResponseEntity<List<Cliente>> listarTodosClientes() {
+		List<Cliente> clientes = clienteService.listarTodosClientes();
+		return new ResponseEntity<>(clientes, HttpStatus.OK);
+	}
+
+	// Endpoint para obter um cliente por CPF
+	@GetMapping("/{cpf}")
+	public ResponseEntity<Cliente> buscarPorCPF(@PathVariable Long cpf) {
+		Optional<Cliente> cliente = clienteService.buscarPorCPF(cpf);
+		return cliente.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+				.orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+	}
+
+	// Endpoint para atualizar um cliente
+	@PutMapping("/{cpf}")
+	public ResponseEntity<Cliente> atualizarCliente(@PathVariable Long cpf, @RequestBody Cliente cliente) {
+		if (clienteService.buscarPorCPF(cpf).isPresent()) {
+			cliente.setCpf(cpf);
+			Cliente clienteAtualizado = clienteService.atualizarCliente(cliente);
+			return new ResponseEntity<>(clienteAtualizado, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	// Endpoint para excluir um cliente
+	@DeleteMapping("/{cpf}")
+	public ResponseEntity<Void> excluirCliente(@PathVariable Long cpf) {
+		clienteService.excluirCliente(cpf);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+}

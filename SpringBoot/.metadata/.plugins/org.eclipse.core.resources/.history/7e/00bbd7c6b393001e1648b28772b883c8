@@ -1,0 +1,5 @@
+package com.Modulo5.repositores;
+
+public interface ClienteRepository extends JpaRepository<Cliente, long> {
+
+}

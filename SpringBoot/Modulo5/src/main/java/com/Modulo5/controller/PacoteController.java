@@ -1,0 +1,49 @@
+package com.Modulo5.controller;
+
+import com.Modulo5.entities.Pacote;
+import com.Modulo5.services.PacoteService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@Controller
+public class PacoteController {
+
+    private final PacoteService pacoteService;
+
+    @Autowired
+    public PacoteController(PacoteService pacoteService) {
+        this.pacoteService = pacoteService;
+    }
+
+    @GetMapping("/destinos.html")
+    public String listarPacotes(Model model) {
+        List<Pacote> pacotes = pacoteService.listarTodosPacotes();
+        model.addAttribute("pacotes", pacotes);
+        return "destinos.html"; // Nome da página HTML para listar pacotes
+    }
+
+    @PostMapping("/cadastrar-pacote")
+    public String cadastrarPacote(Pacote pacote, Model model) {
+        Pacote pacoteCadastrado = pacoteService.cadastrarPacote(pacote);
+        model.addAttribute("pacote", pacoteCadastrado);
+        return "redirect:/destinos.html?sucesso=true"; // Redireciona para a página "pacotes" com o parâmetro de sucesso
+    }
+
+    @DeleteMapping("/excluir-pacote/{idPacote}")
+    public ResponseEntity<Void> excluirPacote(@PathVariable int idPacote) {
+        pacoteService.excluirPacote(idPacote);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/editar-pacote/{idPacote}")
+    @ResponseBody
+    public Pacote obterPacoteParaEdicao(@PathVariable int idPacote) {
+        return pacoteService.buscarPorIdPacote(idPacote).orElseThrow();
+    }
+}

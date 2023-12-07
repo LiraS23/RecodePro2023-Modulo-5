@@ -36,9 +36,8 @@
 							<!-- RD Navbar Brand-->
 							<div class="rd-navbar-brand">
 								<a class="brand-name" href="index.html"><img class="logo-default"
-										src="images/logo-default-208x46.png" alt="" width="208"
-										height="46" /><img class="logo-inverse"
-										src="images/logo-inverse-208x46.png" alt="" width="208"
+										src="images/logo-default-208x46.png" alt="" width="208" height="46" /><img
+										class="logo-inverse" src="images/logo-inverse-208x46.png" alt="" width="208"
 										height="46" /></a>
 							</div>
 						</div>
@@ -80,7 +79,7 @@
 								<hr class="divider divider-left divider-secondary">
 								<!-- RD Mailform-->
 								<form class="" data-form-output="form-output-global" data-form-type="cadastro"
-									method="post" action="/Modulo4/MeuPacoteServlet">
+									method="post" action="/cadastrar-pacote">
 									<input type="hidden" name="action" value="adicionar">
 									<div class="row row-fix row-20">
 										<div class="col-md-6">
@@ -126,8 +125,34 @@
 								<!-- Tabela para listar os pacotes -->
 								<section>
 									<table class="table">
-										<tbody id="lista-destinos">
-											<!-- Os dados da lista de destinos serão inseridos aqui -->
+										<thead>
+											<tr>
+												<th>Destino</th>
+												<th>Valor Diaria</th>
+												<th>Ações</th>
+											</tr>
+										</thead>
+										<tbody>
+											<!-- Iterar sobre a lista de pacotes -->
+											<tr th:each="pacote : ${pacotes}" th:id="'pacote-' + ${pacote.idPacote}">
+												<td th:text="${pacote.destino}"></td>
+												<td th:text="${pacote.valorDiaria}"></td>
+												<!-- Botões de editar e excluir -->
+												<td>
+													<!-- Botão Editar -->
+													<a th:href="@{'/editar-pacote/' + ${pacote.idPacote}}"
+														class="btn btn-primary btn-sm btn-editar"
+														style="border-radius: 25px;">
+														Editar
+													</a>
+													<!-- Botão Excluir -->
+													<a th:href="@{'/excluir-pacote/' + ${pacote.idPacote}}"
+														class="btn btn-danger btn-sm btn-excluir"
+														style="border-radius: 25px;">
+														Excluir
+													</a>
+												</td>
+											</tr>
 										</tbody>
 									</table>
 								</section>
@@ -138,13 +163,14 @@
 			</div>
 		</section>
 
+
 		<!-- Footer Minimal-->
 		<footer class="section page-footer page-footer-minimal novi-background bg-cover text-center bg-gray-darker">
 			<div class="container container-wide">
 				<div class="row row-fix justify-content-sm-center align-items-md-center row-30">
 					<div class="col-md-10 col-lg-7 col-xl-4 text-xl-left">
-						<a href="index.html"><img class="inverse-logo" src="images/logo-inverse-208x46.png"
-								alt="" width="208" height="46" /></a>
+						<a href="index.html"><img class="inverse-logo" src="images/logo-inverse-208x46.png" alt=""
+								width="208" height="46" /></a>
 					</div>
 					<div class="col-md-10 col-lg-7 col-xl-4">
 						<p class="right">
@@ -170,6 +196,38 @@
 			</div>
 		</footer>
 
+		<!-- Modal de Edição -->
+		<div class="modal fade" id="editPacote" tabindex="-1" role="dialog" aria-labelledby="editPacoteLabel"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="editPacoteLabel">Editar Pacote</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<!-- Formulário de Edição -->
+						<form id="editPacoteForm" method="post" action="/editar-pacote">
+							<input type="hidden" id="editIdPacote" name="idPacote" value="">
+							<div class="form-group">
+								<label for="editDestino">Destino:</label>
+								<input type="text" class="form-control" id="editDestino" name="destino" required>
+							</div>
+							<div class="form-group">
+								<label for="editValorDiaria">Valor Diária:</label>
+								<input type="text" class="form-control" id="editValorDiaria" name="valorDiaria"
+									required>
+							</div>
+							<button type="submit" class="btn btn-primary">Salvar Alterações</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
 	</div>
 
 	<!-- Global Mailform Output-->
@@ -177,78 +235,59 @@
 	<!-- Javascript-->
 	<script src="js/core.min.js"></script>
 	<script src="js/script.js"></script>
-	<script>
-		function listarDestinos() {
-			// Use AJAX para solicitar a lista de destinos ao servidor
-			$.ajax({
-				type: 'GET',
-				url: '/Modulo4/MeuPacoteServlet?action=listar', // Certifique-se de que seu Servlet esteja mapeado corretamente
-				success: function (data) {
-					// Atualize a tabela com os dados recebidos do servidor
-					$('#lista-destinos').html(data);
-
-					// Adicione botões "Editar" a cada registro da tabela
-					addEditButtons();
-				},
-				error: function () {
-					alert('Falha ao listar os destinos.');
-				}
-			});
-		}
-
-		function addEditButtons() {
-			// Encontre todas as linhas da tabela
-			var rows = $('#lista-destinos tr');
-
-			// Para cada linha, exceto a primeira que contém cabeçalhos
-			for (var i = 1; i < rows.length; i++) {
-				var row = rows[i];
-				var idPacote = $(row).find('td:first').text(); // Obtenha o ID do pacote da primeira coluna
-
-				// Crie o botão "Editar" com o ID do destino como parâmetro na URL
-				var editButton = '<a class="btn btn-primary" href="editarDestino.jsp?idPacote='
-					+ idPacote + '">Editar</a>';
-
-				// Crie o botão "Excluir" com o ID do destino como parâmetro na URL
-				var deleteButton = '<a class="btn btn-danger" href="javascript:excluirDestino('
-					+ idPacote + ')">Excluir</a>';
-
-				// Crie uma nova célula na tabela para o botão "Editar"
-				var editButtonCell = '<td>' + editButton + '</td>';
-
-				// Crie uma nova célula na tabela para o botão "Excluir"
-				var deleteButtonCell = '<td>' + deleteButton + '</td>';
-
-				// Adicione as novas células à linha
-				$(row).append(editButtonCell + deleteButtonCell);
-			}
-		}
-
-		function excluirDestino(idPacote) {
-			if (confirm("Deseja realmente excluir este pacote?")) {
-				$.ajax({
-					type: 'POST',
-					url: '/Modulo4/MeuPacoteServlet',
-					data: {
-						action: 'excluir',
-						idPacote: idPacote
-					},
-					success: function (response) {
-						alert(response);
-						// Recarregue a lista de destinos após a exclusão
-						listarDestinos();
-					},
-					error: function () {
-						alert('Falha ao excluir o pacote.');
-					}
-				});
-			}
-		}
-	</script>
-
+	<!-- Script Excluir -->
 	<script>
 		$(document).ready(function () {
-			listarDestinos();
+			// Manipula o clique no botão de exclusão
+			$('.btn-excluir').on('click', function (event) {
+				event.preventDefault();
+
+				// Obtém a URL de exclusão do atributo href
+				var url = $(this).attr('href');
+
+				// Obtém o identificador exclusivo do destino a partir do id da linha
+				var idPacote = $(this).closest('tr').attr('id').split('-')[1];
+
+				// Confirmação de exclusão
+				if (confirm('Deseja realmente excluir este Destino?')) {
+					// Realiza uma requisição AJAX para excluir o destino
+					$.ajax({
+						url: url,
+						type: 'DELETE',
+						success: function () {
+							// Remove a linha da tabela após a exclusão bem-sucedida
+							$('#pacote-' + idPacote).remove();
+						},
+						error: function () {
+							alert('Erro ao excluir o destino.');
+						}
+					});
+				}
+			});
+		});
+	</script>
+
+	<!-- Script Editar -->
+	<script>
+		$(document).ready(function () {
+			// Manipula o clique no botão de edição
+			$('.btn-editar').on('click', function (event) {
+				event.preventDefault();
+
+				// Obtém a URL de edição do atributo href
+				var url = $(this).attr('href');
+
+				// Realiza uma requisição AJAX para obter os dados do destino
+				$.get(url, function (pacote) {
+
+					// Preenche o formulário do modal com os dados do destino
+					$('#editIdPacote').val(pacote.idPacote);
+					$('#editDestino').val(pacote.destino);
+					$('#editValorDiaria').val(pacote.valorDiaria);
+					// Abre o modal de edição
+					$('#editPacote').modal('show');
+				});
+			});
 		});
 	</script>
 

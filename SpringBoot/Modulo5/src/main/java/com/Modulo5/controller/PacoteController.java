@@ -46,4 +46,11 @@ public class PacoteController {
     public Pacote obterPacoteParaEdicao(@PathVariable int idPacote) {
         return pacoteService.buscarPorIdPacote(idPacote).orElseThrow();
     }
+    
+    @PostMapping("/editar-pacote")
+    public String editarPacote(Pacote pacote, Model model) {
+        Pacote pacoteCadastrado = pacoteService.cadastrarPacote(pacote);
+        model.addAttribute("pacote", pacoteCadastrado);
+        return "redirect:/destinos.html?sucesso=true"; // Redireciona para a página "pacotes" com o parâmetro de sucesso
+    }
 }

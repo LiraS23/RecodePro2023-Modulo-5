@@ -1,8 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `viagensrecode` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `viagensrecode`;
+CREATE DATABASE  IF NOT EXISTS `modulo5` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `modulo5`;
 -- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
--- Host: localhost    Database: viagensrecode
+-- Host: localhost    Database: modulo5
 -- ------------------------------------------------------
 -- Server version	8.0.34
 
@@ -25,11 +25,12 @@ DROP TABLE IF EXISTS `cliente`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cliente` (
-  `cpf` varchar(11) NOT NULL,
-  `nome` varchar(50) DEFAULT NULL,
-  `dataNasc` date DEFAULT NULL,
-  `email` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`cpf`)
+  `cpf` bigint NOT NULL,
+  `data_nasc` date NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `nome` varchar(255) NOT NULL,
+  PRIMARY KEY (`cpf`),
+  UNIQUE KEY `UK_cmxo70m08n43599l3h0h07cc6` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -39,7 +40,7 @@ CREATE TABLE `cliente` (
 
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` VALUES ('12345678910','Viviane dos Santos Ribeiro Lira','1992-10-18','teste@teste.com'),('14702840738','Daniel Lira da Silva ','1992-06-23','daniel.lira.s23@gmail.com');
+INSERT INTO `cliente` VALUES (12345678910,'2014-05-12','caioPiabas@gmail.com','Caio Boladão'),(14702840738,'1992-06-23','daniel.lira.s23@gmail.com','Daniel Lira da Silva ');
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -51,11 +52,11 @@ DROP TABLE IF EXISTS `pacote`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pacote` (
-  `idPacote` int NOT NULL AUTO_INCREMENT,
-  `destino` varchar(100) DEFAULT NULL,
-  `valorDiaria` float DEFAULT NULL,
-  PRIMARY KEY (`idPacote`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb3;
+  `id_pacote` int NOT NULL AUTO_INCREMENT,
+  `destino` varchar(255) NOT NULL,
+  `valor_diaria` decimal(38,2) NOT NULL,
+  PRIMARY KEY (`id_pacote`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -64,7 +65,7 @@ CREATE TABLE `pacote` (
 
 LOCK TABLES `pacote` WRITE;
 /*!40000 ALTER TABLE `pacote` DISABLE KEYS */;
-INSERT INTO `pacote` VALUES (23,'MASP - SÃ£o Paulo, SP',450);
+INSERT INTO `pacote` VALUES (1,'Rio de Janeiro',100.00),(2,'Belo Horizonte',150.00),(3,'MASP - São Paulo, SP',300.00);
 /*!40000 ALTER TABLE `pacote` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -76,18 +77,18 @@ DROP TABLE IF EXISTS `pedido`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pedido` (
-  `idPedido` int NOT NULL AUTO_INCREMENT,
-  `dataPedido` date DEFAULT NULL,
-  `diariasPedido` int DEFAULT NULL,
-  `valorPedido` float DEFAULT NULL,
-  `fk_pacote_idPacote` int DEFAULT NULL,
-  `fk_cliente_cpf` varchar(11) DEFAULT NULL,
-  PRIMARY KEY (`idPedido`),
-  KEY `FK_pedido_2` (`fk_pacote_idPacote`),
-  KEY `FK_pedido_3` (`fk_cliente_cpf`),
-  CONSTRAINT `FK_pedido_2` FOREIGN KEY (`fk_pacote_idPacote`) REFERENCES `pacote` (`idPacote`) ON DELETE RESTRICT,
-  CONSTRAINT `FK_pedido_3` FOREIGN KEY (`fk_cliente_cpf`) REFERENCES `cliente` (`cpf`) ON DELETE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
+  `id_pedido` int NOT NULL AUTO_INCREMENT,
+  `data_pedido` date NOT NULL,
+  `diarias_pedido` int NOT NULL,
+  `valor_pedido` decimal(38,2) NOT NULL,
+  `cpf` bigint NOT NULL,
+  `id_pacote` int NOT NULL,
+  PRIMARY KEY (`id_pedido`),
+  KEY `FKot17slv6h9lqq6dm18l9jgowt` (`cpf`),
+  KEY `FK7371l5fjn1xmgorqttbulpwd3` (`id_pacote`),
+  CONSTRAINT `FK7371l5fjn1xmgorqttbulpwd3` FOREIGN KEY (`id_pacote`) REFERENCES `pacote` (`id_pacote`),
+  CONSTRAINT `FKot17slv6h9lqq6dm18l9jgowt` FOREIGN KEY (`cpf`) REFERENCES `cliente` (`cpf`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,7 +97,7 @@ CREATE TABLE `pedido` (
 
 LOCK TABLES `pedido` WRITE;
 /*!40000 ALTER TABLE `pedido` DISABLE KEYS */;
-INSERT INTO `pedido` VALUES (10,'2023-11-03',1,450,23,'14702840738');
+INSERT INTO `pedido` VALUES (1,'2023-12-07',9,1350.00,12345678910,2),(2,'2023-12-07',4,600.00,14702840738,2);
 /*!40000 ALTER TABLE `pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -109,4 +110,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-03 20:18:11
+-- Dump completed on 2023-12-07 22:22:38

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Pedidos</title>
+
+	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" type="text/css"
+		href="fonts.googleapis.com/css?family=Oswald:200,400%7CLato:300,400,300italic,700%7CMontserrat:900">
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/fonts.css">
+</head>
+
+<body>
+	<div class="page">
+		<header class="section page-header breadcrumbs-custom-wrap bg-gradient bg-secondary-2 novi-background bg-cover">
+			<!-- RD Navbar-->
+			<div class="rd-navbar-wrap rd-navbar-default" style="z-index: 1000;">
+				<nav class="rd-navbar" data-layout="rd-navbar-fixed" data-sm-layout="rd-navbar-fixed"
+					data-md-layout="rd-navbar-fixed" data-md-device-layout="rd-navbar-fixed"
+					data-lg-layout="rd-navbar-fullwidth" data-xl-layout="rd-navbar-static"
+					data-lg-device-layout="rd-navbar-fixed" data-xl-device-layout="rd-navbar-static"
+					data-md-stick-up-offset="2px" data-lg-stick-up-offset="2px" data-stick-up="true"
+					data-sm-stick-up="true" data-md-stick-up="true" data-lg-stick-up="true" data-xl-stick-up="true">
+					<div class="rd-navbar-inner">
+						<!-- RD Navbar Panel-->
+						<div class="rd-navbar-panel">
+							<!-- RD Navbar Toggle-->
+							<button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap">
+								<span></span>
+							</button>
+							<!-- RD Navbar Brand-->
+							<div class="rd-navbar-brand">
+								<a class="brand-name" href="index.html"><img class="logo-default"
+										src="images/logo-default-208x46.png" alt="" width="208" height="46" /><img
+										class="logo-inverse" src="images/logo-inverse-208x46.png" alt="" width="208"
+										height="46" /></a>
+							</div>
+						</div>
+						<div class="rd-navbar-aside-right">
+							<div class="rd-navbar-nav-wrap">
+								<!-- RD Navbar Nav-->
+								<ul class="rd-navbar-nav">
+									<li><a href="index.html">Home</a></li>
+									<li><a href="destinos.html">Destinos</a></li>
+									<li><a href="promocoes.html">Promoções</a></li>
+									<li><a href="contato.html">Contato</a></li>
+									<li><a href="cliente.html">Cliente</a></li>
+									<li class="active"><a href="pedidos.html">Reserve um
+											passeio</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</nav>
+			</div>
+			<!-- Breadcrumbs-->
+			<section class="breadcrumbs-custom"
+				style="background: url(&quot;https://img.freepik.com/vetores-premium/hora-de-viajar-fundo-em-desenho-de-desenho-animado-em-vista-superior-papel-de-parede-com-composicao-de-passaporte_198565-2071.jpg?w=2000&quot;); background-size: cover;">
+				<div class="container">
+					<p class="breadcrumbs-custom-subtitle">Vamos Viajar!</p>
+					<p class="heading-1 breadcrumbs-custom-title">Pedidos</p>
+				</div>
+			</section>
+
+		</header>
+		<!-- Pedido-->
+		<section class="section section-wrap bg-gray-lighter novi-background bg-cover">
+			<div class="section-wrap-inner">
+				<div class="container container-bigger">
+					<div class="row">
+						<div class="col">
+							<div class="section section-lg">
+								<h3>Faça seu Pedido</h3>
+								<hr class="divider divider-left divider-secondary">
+								<p class="big">
+									"Dê o Primeiro Passo para Realizar Seus Sonhos - Faça Seu
+									Pedido Hoje!" <br> Todos nós temos sonhos e desejos
+									especiais. Acreditamos que a felicidade está nas pequenas
+									coisas e em experiências únicas. Faça seu pedido conosco e
+									transforme seus sonhos em realidade. <br> Ao fazer um
+									pedido, você não está apenas adquirindo um produto ou serviço;
+									você está investindo em momentos especiais, em memórias
+									inesquecíveis e em momentos de alegria. Não deixe escapar a
+									chance de tornar o seu dia mais brilhante e a sua vida mais
+									significativa.
+								</p>
+								<hr class="divider divider-left divider-secondary">
+								<br>
+								<br>
+								<br>
+								<!-- RD Mailform-->
+								<form class="" data-form-output="form-output-global" data-form-type="cadastro"
+									method="post" action="/cadastrar-pedido" onsubmit="preencherDataAtual()">
+									<input type="hidden" name="action" value="adicionar">
+									<input type="hidden" id="dataPedido" name="dataPedido">
+
+									<div class="row">
+										<div class="form-group col-3">
+											<label for="diariasPedido">Diárias:</label>
+											<input type="number" class="form-control" id="diariasPedido"
+												name="diariasPedido" placeholder="Dias" min="0" required>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="form-group col-3  h-100">
+											<label for="idPacote">Destino:</label>
+											<select class="form-control form-select h-100" id="idPacote"
+												name="fk_pacote_idPacote" required>
+												<!-- As opções serão preenchidas dinamicamente pelo JavaScript -->
+											</select>
+										</div>
+
+										<div class="form-group col-6  h-100">
+											<label for="cpf">Cliente:</label>
+											<select class="form-control form-select h-100" id="idCliente"
+												name="fk_cliente_cpf" required>
+												<!-- As opções serão preenchidas dinamicamente pelo JavaScript -->
+											</select>
+										</div>
+
+										<div class="form-group col-3">
+											<label for="valorPedido">Valor:</label>
+											<input type="text" class="form-control" id="valorPedido" name="valorPedido"
+												placeholder="Valor do Pedido" min="0" required>
+										</div>
+									</div>
+
+									<br>
+									<br>
+									<br>
+
+									<button type="submit" class="btn btn-primary">Enviar Pedido</button>
+								</form>
+
+								<script>
+									function preencherDataAtual() {
+										var dataAtual = new Date();
+										var dataFormatada = dataAtual.getFullYear() + '-' + adicionarZero(dataAtual.getMonth() + 1) + '-' + adicionarZero(dataAtual.getDate());
+										document.getElementById('dataPedido').value = dataFormatada;
+									}
+
+									function adicionarZero(numero) {
+										return numero < 10 ? '0' + numero : numero;
+									}
+								</script>
+
+
+								<br>
+								<hr class="divider divider-left divider-secondary">
+								<section>
+									<table class="table" id="pedidosTable">
+										<thead>
+											<tr>
+												<th>Id</th>
+												<th>Data</th>
+												<th>Diarias</th>
+												<th>Valor</th>
+												<th>Pacote</th>
+												<th>CPF Cliente</th>
+											</tr>
+										</thead>
+										<tbody>
+											<!-- Iterar sobre a lista de pacotes -->
+											<tr th:each="pedido : ${pedidos}" th:id="'pedido-' + ${pedido.idPedido}">
+												<td th:text="${pedido.idPedido}"></td>
+												<td th:text="${pedido.dataPedido}"></td>
+												<td th:text="${pedido.diariasPedido}"></td>
+												<td th:text="${pedido.valorPedido}"></td>
+												<td th:text="${pedido.fk_pacote_idPacote.idPacote}"></td>
+												<td th:text="${pedido.fk_cliente_cpf.cpf}"></td>
+												<!-- Botões de editar e excluir -->
+												<td>
+													<!-- Botão Editar -->
+													<a th:href="@{'/editar-pedido/' + ${pedido.idPedido}}"
+														class="btn btn-primary btn-sm btn-editar"
+														style="border-radius: 25px;">
+														Editar
+													</a>
+													<!-- Botão Excluir -->
+													<a th:href="@{'/excluir-pedido/' + ${pedido.idPedido}}"
+														class="btn btn-danger btn-sm btn-excluir"
+														style="border-radius: 25px;">
+														Excluir
+													</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</section>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- Footer Minimal-->
+		<footer class="section page-footer page-footer-minimal novi-background bg-cover text-center bg-gray-darker">
+			<div class="container container-wide">
+				<div class="row row-fix justify-content-sm-center align-items-md-center row-30">
+					<div class="col-md-10 col-lg-7 col-xl-4 text-xl-left">
+						<a href="index.html"><img class="inverse-logo" src="images/logo-inverse-208x46.png" alt=""
+								width="208" height="46" /></a>
+					</div>
+					<div class="col-md-10 col-lg-7 col-xl-4">
+						<p class="right">
+							&#169;&nbsp;<span class="copyright-year"></span> All Rights
+							Reserved Viagens Recode
+						</p>
+					</div>
+					<div class="col-md-10 col-lg-7 col-xl-4 text-xl-right">
+						<ul class="group-xs group-middle">
+							<li><a class="icon novi-icon icon-md-middle icon-circle icon-secondary-5-filled mdi mdi-facebook"
+									href="#"></a></li>
+							<li><a class="icon novi-icon icon-md-middle icon-circle icon-secondary-5-filled mdi mdi-twitter"
+									href="#"></a></li>
+							<li><a class="icon novi-icon icon-md-middle icon-circle icon-secondary-5-filled mdi mdi-instagram"
+									href="#"></a></li>
+							<li><a class="icon novi-icon icon-md-middle icon-circle icon-secondary-5-filled mdi mdi-google"
+									href="#"></a></li>
+							<li><a class="icon novi-icon icon-md-middle icon-circle icon-secondary-5-filled mdi mdi-linkedin"
+									href="#"></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</footer>
+		
+		<!-- Modal de Edição -->
+		<div class="modal fade" id="editPedido" tabindex="-1" role="dialog" aria-labelledby="editPedidoLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="editPedidoLabel">Editar Cliente</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<!-- Formulário de Edição -->
+						<form id="editPedidoForm" method="post" action="/editar-pedido">
+							<input type="" id="editIdPedido" name="idPedido" value="">
+							<input type="" id="editDataPedido" name="dataPedido" value="">
+							<div class="form-group">
+								<label for="editDiariasPedido">Diarias:</label>
+								<input type="number" class="form-control" id="editDiariasPedido" name="diariasPedido" required>
+							</div>
+							<div class="form-group">
+								<label for="editDataNasc">Data de Nascimento:</label>
+								<input type="date" class="form-control" id="editDataNasc" name="DataNasc"
+									required>
+							</div>
+							<div class="form-group">
+								<label for="editEmail">E-mail:</label>
+								<input type="email" class="form-control" id="editEmail" name="Email"
+									required>
+							</div>
+							<button type="submit" class="btn btn-primary">Salvar Alterações</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+
+	<!-- Global Mailform Output-->
+	<div class="snackbars" id="form-output-global"></div>
+	<!-- Javascript-->
+	<script src="js/core.min.js"></script>
+	<script src="js/script.js"></script>
+
+	<script>
+		$(document).ready(function () {
+			$.get("/obter-idPacotes-e-destinos", function (data) {
+				$('#idPacote').empty();
+
+				// Verifica se ambos os arrays têm o mesmo comprimento
+				if (data.idsPacotes.length === data.destinos.length) {
+					for (var i = 0; i < data.idsPacotes.length; i++) {
+						var idPacote = data.idsPacotes[i];
+						var destino = data.destinos[i];
+						var valorDiaria = data.valoresDiaria[i];
+						// Armazena os valores em atributos data para serem recuperados posteriormente
+						$('#idPacote').append('<option value="' + idPacote + '" data-valor-diaria="' + valorDiaria + '">' + idPacote + ' - ' + destino + '</option>');
+					}
+				} else {
+					console.error("Erro: Os arrays de IDs e destinos têm comprimentos diferentes.");
+				}
+			});
+
+			$.get("/obter-cpfENomeClientes", function (data) {
+				$('#idCliente').empty();
+
+				// Verifica se ambos os arrays têm o mesmo comprimento
+				if (data.cpfs.length === data.nomes.length) {
+					for (var i = 0; i < data.cpfs.length; i++) {
+						var cpf = data.cpfs[i];
+						var nome = data.nomes[i];
+						// Armazena os valores em atributos data para serem recuperados posteriormente
+						$('#idCliente').append('<option value="' + cpf + '" data-nome="' + nome + '">' + cpf + ' - ' + nome + '</option>');
+					}
+				} else {
+					console.error("Erro: Os arrays de CPFs e nomes têm comprimentos diferentes.");
+				}
+			});
+
+			// Evento de mudança no select de idPacote
+			$('#idPacote').change(function () {
+				// Recupera o destino armazenado nos atributos data
+				var destinoSelecionado = $('#idPacote option:selected').data('destino');
+				// Faça o que for necessário com o destino selecionado
+				console.log("Destino selecionado: " + destinoSelecionado);
+			});
+
+			// Evento de mudança no select de idCliente
+			$('#idCliente').change(function () {
+				// Recupera o nome armazenado nos atributos data
+				var nomeSelecionado = $('#idCliente option:selected').data('nome');
+				// Faça o que for necessário com o nome selecionado
+				console.log("Nome selecionado: " + nomeSelecionado);
+			});
+		});
+	</script>
+
+	<script>
+		$(document).ready(function () {
+			// Evento de alteração no campo de diárias
+			$('#diariasPedido').change(atualizarValorPedido);
+
+			// Evento de alteração no campo de destino
+			$('#idPacote').change(atualizarValorPedido);
+
+			function atualizarValorPedido() {
+				// Obter o valor da diária selecionada
+				var valorDiaria = $('#idPacote option:selected').data('valorDiaria');
+
+				// Obter o número de diárias
+				var diarias = $('#diariasPedido').val();
+
+				// Calcular o valor do pedido
+				var valorPedido = valorDiaria * diarias;
+
+				// Atualizar o campo de valor do pedido
+				$('#valorPedido').val(valorPedido.toFixed(2));
+			}
+		});
+	</script>
+
+	<script>
+		function preencherDataAtual() {
+			var dataAtual = new Date();
+			var dataFormatada = dataAtual.getFullYear() + '-' + adicionarZero(dataAtual.getMonth() + 1) + '-' + adicionarZero(dataAtual.getDate());
+			document.getElementById('dataPedido').value = dataFormatada;
+		}
+
+		function adicionarZero(numero) {
+			return numero < 10 ? '0' + numero : numero;
+		}
+	</script>
+	
+	<!-- Script Excluir -->
+	<script>
+		$(document).ready(function () {
+			// Manipula o clique no botão de exclusão
+			$('.btn-excluir').on('click', function (event) {
+				event.preventDefault();
+
+				// Obtém a URL de exclusão do atributo href
+				var url = $(this).attr('href');
+
+				// Obtém o identificador exclusivo do pedido a partir do id da linha
+				var idPedido = $(this).closest('tr').attr('id').split('-')[1];
+
+				// Confirmação de exclusão
+				if (confirm('Deseja realmente excluir este Pedido?')) {
+					// Realiza uma requisição AJAX para excluir o pedido
+					$.ajax({
+						url: url,
+						type: 'DELETE',
+						success: function () {
+							// Remove a linha da tabela após a exclusão bem-sucedida
+							$('#pedido-' + idPedido).remove();
+						},
+						error: function () {
+							alert('Erro ao excluir o pedido.');
+						}
+					});
+				}
+			});
+		});
+	</script>
+
+	<!-- Script Editar -->
+	<script>
+		$(document).ready(function () {
+			// Manipula o clique no botão de edição
+			$('.btn-editar').on('click', function (event) {
+				event.preventDefault();
+
+				// Obtém a URL de edição do atributo href
+				var url = $(this).attr('href');
+
+				// Realiza uma requisição AJAX para obter os dados do pedido
+				$.get(url, function (pedido) {
+
+					// Preenche o formulário do modal com os dados do pedido
+					$('#editIdPedido').val(pedido.idPedido);
+					$('#editDataPedido').val(pedido.dataPedido);
+					$('#editDiariasPedido').val(pedido.diariasPedido);
+					$('#editEmail').val(pedido.valorPedido);
+					// Abre o modal de edição
+					$('#editPedido').modal('show');
+				});
+			});
+		});
+	</script>
+
+</body>
+
+</html>

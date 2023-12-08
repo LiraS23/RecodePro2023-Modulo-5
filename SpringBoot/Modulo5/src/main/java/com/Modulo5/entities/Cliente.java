@@ -1,19 +1,16 @@
 package com.Modulo5.entities;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class Cliente {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private Long cpf;
 	
@@ -21,12 +18,12 @@ public class Cliente {
 	private String nome;
 	
 	@Column(nullable = false)
-	private Date dataNasc;
+	private LocalDate dataNasc;
 	
 	@Column(nullable = false, unique = true)
 	private String email;
 
-	public Cliente(Long cpf, String nome, Date dataNasc, String email) {
+	public Cliente(Long cpf, String nome, LocalDate dataNasc, String email) {
 		super();
 		this.cpf = cpf;
 		this.nome = nome;
@@ -54,11 +51,11 @@ public class Cliente {
 		this.nome = nome;
 	}
 
-	public Date getDataNasc() {
+	public LocalDate getDataNasc() {
 		return dataNasc;
 	}
 
-	public void setDataNasc(Date dataNasc) {
+	public void setDataNasc(LocalDate dataNasc) {
 		this.dataNasc = dataNasc;
 	}
 

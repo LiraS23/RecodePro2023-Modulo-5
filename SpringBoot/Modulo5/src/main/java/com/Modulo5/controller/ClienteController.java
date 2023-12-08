@@ -46,4 +46,11 @@ public class ClienteController {
     public Cliente obterClienteParaEdicao(@PathVariable Long cpf) {
         return clienteService.buscarPorCPF(cpf).orElseThrow();
     }
+    
+    @PostMapping("/editar-cliente")
+    public String editarCliente(Cliente cliente, Model model) {
+        Cliente clienteCadastrado = clienteService.cadastrarCliente(cliente);
+        model.addAttribute("cliente", clienteCadastrado);
+        return "redirect:/cliente.html?sucesso=true"; // Redireciona para a página "clientes" com o parâmetro de sucesso
+    }
 }

@@ -19,7 +19,7 @@
 	<div class="page">
 		<header class="section page-header breadcrumbs-custom-wrap bg-gradient bg-secondary-2 novi-background bg-cover">
 			<!-- RD Navbar-->
-			<div class="rd-navbar-wrap rd-navbar-default">
+			<div class="rd-navbar-wrap rd-navbar-default" style="z-index: 1000;">
 				<nav class="rd-navbar" data-layout="rd-navbar-fixed" data-sm-layout="rd-navbar-fixed"
 					data-md-layout="rd-navbar-fixed" data-md-device-layout="rd-navbar-fixed"
 					data-lg-layout="rd-navbar-fullwidth" data-xl-layout="rd-navbar-static"
@@ -36,9 +36,8 @@
 							<!-- RD Navbar Brand-->
 							<div class="rd-navbar-brand">
 								<a class="brand-name" href="index.html"><img class="logo-default"
-										src="images/logo-default-208x46.png" alt="" width="208"
-										height="46" /><img class="logo-inverse"
-										src="images/logo-inverse-208x46.png" alt="" width="208"
+										src="images/logo-default-208x46.png" alt="" width="208" height="46" /><img
+										class="logo-inverse" src="images/logo-inverse-208x46.png" alt="" width="208"
 										height="46" /></a>
 							</div>
 						</div>
@@ -85,7 +84,7 @@
 									distância. Junte-se a nós!</p>
 								<!--form-->
 								<form class="" data-form-output="form-output-global" data-form-type="contact"
-									method="post" action="/Modulo4/ClienteController">
+									method="post" action="/cadastrar-cliente">
 									<input type="hidden" name="action" value="adicionar">
 									<div class="row row-fix row-20">
 										<div class="col-md-6">
@@ -146,18 +145,40 @@
 							<hr class="divider divider-left divider-secondary">
 							<div class="section section-lg">
 								<div id="lista-clientes">
-									<section>
+									<section class=" table-responsive">
 										<table class="table">
 											<thead>
 												<tr>
 													<th>CPF</th>
 													<th>Nome</th>
-													<th>E-mail</th>
 													<th>Data de Nascimento</th>
+													<th>E-mail</th>
+													<th>Ações</th>
 												</tr>
 											</thead>
 											<tbody>
-												<!-- Os dados dos clientes serão inseridos aqui -->
+												<!-- Iterar sobre a lista de pacotes -->
+												<tr th:each="cliente : ${clientes}" th:id="'cliente-' + ${cliente.cpf}">
+													<td th:text="${cliente.cpf}"></td>
+													<td th:text="${cliente.nome}"></td>
+													<td th:text="${cliente.dataNasc}"></td>
+													<td th:text="${cliente.email}"></td>
+													<!-- Botões de editar e excluir -->
+													<td>
+														<!-- Botão Editar -->
+														<a th:href="@{'/editar-cliente/' + ${cliente.cpf}}"
+															class="btn btn-primary btn-sm btn-editar"
+															style="border-radius: 25px;">
+															Editar
+														</a>
+														<!-- Botão Excluir -->
+														<a th:href="@{'/excluir-cliente/' + ${cliente.cpf}}"
+															class="btn btn-danger btn-sm btn-excluir"
+															style="border-radius: 25px;">
+															Excluir
+														</a>
+													</td>
+												</tr>
 											</tbody>
 										</table>
 									</section>
@@ -175,8 +196,8 @@
 			<div class="container container-wide">
 				<div class="row row-fix justify-content-sm-center align-items-md-center row-30">
 					<div class="col-md-10 col-lg-7 col-xl-4 text-xl-left">
-						<a href="index.html"><img class="inverse-logo" src="images/logo-inverse-208x46.png"
-								alt="" width="208" height="46" /></a>
+						<a href="index.html"><img class="inverse-logo" src="images/logo-inverse-208x46.png" alt=""
+								width="208" height="46" /></a>
 					</div>
 					<div class="col-md-10 col-lg-7 col-xl-4">
 						<p class="right">
@@ -201,6 +222,43 @@
 				</div>
 			</div>
 		</footer>
+
+		<!-- Modal de Edição -->
+		<div class="modal fade" id="editCliente" tabindex="-1" role="dialog" aria-labelledby="editClienteLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="editClienteLabel">Editar Cliente</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<!-- Formulário de Edição -->
+						<form id="editClienteForm" method="post" action="/editar-cliente">
+							<input type="hidden" id="editCpf" name="cpf" value="">
+							<div class="form-group">
+								<label for="editNome">Nome:</label>
+								<input type="text" class="form-control" id="editNome" name="nome" required>
+							</div>
+							<div class="form-group">
+								<label for="editDataNasc">Data de Nascimento:</label>
+								<input type="date" class="form-control" id="editDataNasc" name="DataNasc"
+									required>
+							</div>
+							<div class="form-group">
+								<label for="editEmail">E-mail:</label>
+								<input type="email" class="form-control" id="editEmail" name="Email"
+									required>
+							</div>
+							<button type="submit" class="btn btn-primary">Salvar Alterações</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 
 	<!-- Global Mailform Output-->
@@ -208,81 +266,61 @@
 	<!-- Javascript-->
 	<script src="js/core.min.js"></script>
 	<script src="js/script.js"></script>
+	<!-- Script Excluir -->
 	<script>
-		$(document)
-			.ready(
-				function () {
-					// Função para carregar a lista de clientes
-					function carregarListaClientes() {
-						$.ajax({
-							type: "GET",
-							url: "/Modulo4/ClienteController",
-							data: {
-								action: "listar"
-							},
-							success: function (response) {
-								// Atualiza a tabela com a lista de clientes
-								$("#lista-clientes tbody").html(
-									response);
+		$(document).ready(function () {
+			// Manipula o clique no botão de exclusão
+			$('.btn-excluir').on('click', function (event) {
+				event.preventDefault();
 
-								// Adicione botões "Editar" e "Excluir" a cada linha
-								addEditAndDeleteButtons();
-							}
-						});
-					}
+				// Obtém a URL de exclusão do atributo href
+				var url = $(this).attr('href');
 
-					function addEditAndDeleteButtons() {
-						// Encontre todas as linhas da tabela de clientes
-						var rows = $("#lista-clientes tbody tr");
+				// Obtém o identificador exclusivo do cliente a partir do id da linha
+				var cpf = $(this).closest('tr').attr('id').split('-')[1];
 
-						// Para cada linha
-						rows
-							.each(function () {
-								var row = $(this);
+				// Confirmação de exclusão
+				if (confirm('Deseja realmente excluir este Cliente?')) {
+					// Realiza uma requisição AJAX para excluir o cliente
+					$.ajax({
+						url: url,
+						type: 'DELETE',
+						success: function () {
+							// Remove a linha da tabela após a exclusão bem-sucedida
+							$('#cliente-' + cpf).remove();
+						},
+						error: function () {
+							alert('Erro ao excluir o cliente.');
+						}
+					});
+				}
+			});
+		});
+	</script>
 
-								// Obtenha o ID do cliente da linha (você deve ter uma coluna para o ID)
-								var idCliente = row
-									.find("td:first").text();
+	<!-- Script Editar -->
+	<script>
+		$(document).ready(function () {
+			// Manipula o clique no botão de edição
+			$('.btn-editar').on('click', function (event) {
+				event.preventDefault();
 
-								// Crie botões "Editar" e "Excluir" para cada linha
-								var editButton = '<a class="btn btn-primary" href="editarCliente.jsp?cpf='
-									+ idCliente
-									+ '">Editar</button>';
-								var deleteButton = '<button class="btn btn-danger" onclick="excluirCliente('
-									+ idCliente
-									+ ')">Excluir</button>';
+				// Obtém a URL de edição do atributo href
+				var url = $(this).attr('href');
 
-								// Adicione as células das colunas de botões à linha
-								row.append('<td>' + editButton
-									+ '</td><td>'
-									+ deleteButton + '</td>');
-							});
-					}
+				// Realiza uma requisição AJAX para obter os dados do cliente
+				$.get(url, function (cliente) {
 
-					// Carrega a lista de clientes quando a página é carregada
-					carregarListaClientes();
+					// Preenche o formulário do modal com os dados do cliente
+					$('#editCpf').val(cliente.cpf);
+					$('#editNome').val(cliente.nome);
+					$('#editDataNasc').val(cliente.dataNasc);
+					$('#editEmail').val(cliente.email);
+					// Abre o modal de edição
+					$('#editCliente').modal('show');
 				});
-
-		function excluirCliente(cpf) {
-			if (confirm("Deseja realmente excluir este Cliente?")) {
-				$.ajax({
-					type: 'POST',
-					url: '/Modulo4/ClienteController',
-					data: {
-						action: 'excluir',
-						cpf: cpf
-					},
-					success: function (response) {
-						alert(response);
-						// Recarregue a página para atualizar a lista de clientes
-						location.reload();
-					},
-					error: function () {
-						alert('Falha ao excluir o cliente.');
-					}
-				});
-			}
-		}
+			});
+		});
 	</script>
 
 </body>

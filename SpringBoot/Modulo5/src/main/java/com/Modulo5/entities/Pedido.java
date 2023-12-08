@@ -1,6 +1,7 @@
 package com.Modulo5.entities;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
@@ -21,7 +22,7 @@ public class Pedido {
 	private int idPedido;
 	
 	@Column(nullable = false)
-	private Date dataPedido;
+	private LocalDate dataPedido;
 	
 	@Column(nullable = false)
 	private int diariasPedido;
@@ -37,7 +38,7 @@ public class Pedido {
 	@JoinColumn(name = "cpf", nullable = false)
 	private Cliente fk_cliente_cpf;
 
-	public Pedido(int idPedido, Date dataPedido, int diariasPedido, BigDecimal valorPedido, Pacote fk_pacote_idPacote,
+	public Pedido(int idPedido, LocalDate dataPedido, int diariasPedido, BigDecimal valorPedido, Pacote fk_pacote_idPacote,
 			Cliente fk_cliente_cpf) {
 		super();
 		this.idPedido = idPedido;
@@ -60,11 +61,11 @@ public class Pedido {
 		this.idPedido = idPedido;
 	}
 
-	public Date getDataPedido() {
+	public LocalDate getDataPedido() {
 		return dataPedido;
 	}
 
-	public void setDataPedido(Date dataPedido) {
+	public void setDataPedido(LocalDate dataPedido) {
 		this.dataPedido = dataPedido;
 	}
 
